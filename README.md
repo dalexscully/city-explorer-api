@@ -1,14 +1,15 @@
 # city-explorer-api
 
-Name of feature: ________________________________
+Name of feature: City-explorer-api
 
-Estimate of time needed to complete: _____
+Estimate of time needed to complete: 12hrs
 
-Start time: _____
+Start time: 2pm
 
-Finish time: _____
+Finish time: 2:30am
 
-Actual time needed to complete: _____
+Actual time needed to complete: 10hours
+
 [wrc](/wrrc.jpg)
 
 
