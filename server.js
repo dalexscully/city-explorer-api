@@ -5,8 +5,11 @@ console.log('Yoo, My first server!');
 // const {response, request} = require('express');
 // ****** REQUIRES *******
 const express = require('express');
+
 require('dotenv').config();
-let weatherData = require('./data/weather.json');
+
+let data = require('./data/weather.json');
+
 const cors = require('cors');
 
 
@@ -24,31 +27,40 @@ const PORT = process.env.PORT || 3002;
 
 
 // ****** BASE END POINTS ********
-// console.log('This is showing up in my terminal!');
-// response.status(200).send('Welcome to my server');
+
+app.get('/', (request, response) => {
+  console.log('This is showing up in my terminal!');
+  response.status(200).send('Welcome to my server');
+});
+
+app.get('/hello', (request, response) => {
+  console.log(request.query);
+  let firstName = request.query.firstName;
+  let lastName = request.query.lastName;
+  response.status(200).send(`Hello ${firstName} ${lastName}! Welcome to my server!`);
+});
 
 app.get('/weather', (request, response, next) => {
-  try {
-    let city = request.query;
-    let lat = request.query.lat;
-    let lon = request.query.lon;
+  let cityName = request.query.cityName;
+  let lat = request.query.lat;
+  let lon = request.query.lon;
 
-    let cityNameData = weatherData.find(cityObj => cityObj.city_name.toLowerCase() === city.toLowerCase() && Math.floor(cityObj.lat) === lat && Math.floor(cityObj.lon) === lon);
+  try{
 
-    let dataSend = cityNameData.data.map(details => new Forecast(details));
-    response.status(200).send(dataSend);
-
-  } catch (error) {
+    let cityData = data.find(city => city.city_name === cityName);
+    let ForecastList = cityData.data.map(element => new Forecast(element));
+    response.status(200).send(ForecastList);
+  } catch(error) {
     next(error);
+    response.status(500).send(error.message);
   }
 });
 
 
-
 class Forecast {
-  constructor(city) {
-    this.city_name = city.description;
-    this.datetime = city.datetime;
+  constructor(ForecastData) {
+    this.data = ForecastData.datetime;
+    this.description = ForecastData.weather.description
   }
 }
 
