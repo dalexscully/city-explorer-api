@@ -13,6 +13,7 @@ Finish time: 2:30am
 Actual time needed to complete: 10hours
 
 [wrc](/wrrc.jpg)
+[wrc](/WRRC3.jpg)
 
 **Author**: Your Name Goes Here
 **Version**: 1.0.0 (increment the patch/fix version number if you make more commits past your first submission)
