@@ -40,12 +40,12 @@ app.get('/hello', (request, response) => {
   response.status(200).send(`Hello ${firstName} ${lastName}! Welcome to my server!`);
 });
 
-app.get('/weather', async(request, response) => {
+app.get('/weather', async (request, response) => {
 
   let lat = request.query.lat;
   let lon = request.query.lon;
 
-  try{
+  try {
 
     let weatherUrl = `http://api.weatherbit.io/v2.0/current?key=${process.env.WEATHER_API_KEY}&lang=en&lat=${lat}&lon=${lon}&days=16`;
 
@@ -57,18 +57,43 @@ app.get('/weather', async(request, response) => {
     console.log('got the weather', parsedData.length);
 
     response.status(200).send(parsedData);
-  } catch(error) {
+  } catch (error) {
     console.error('fail to find the weather', error);
 
     response.status(500).send(error.message);
   }
 });
 
-
 class Forecast {
   constructor(ForecastData) {
     this.data = ForecastData.datetime;
     this.description = ForecastData.weather.description;
+  }
+}
+
+app.get('/movies', async (request, response, next) => {
+  try {
+    let movieCity = request.query.movieCity;
+
+    let movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${movieCity}&language=en`;
+    console.log('getting movie data', movieUrl);
+
+    let movieData = await axios.get(movieUrl);
+
+    let groomedData = movieData.data.results.map(movie => new Movie(movie));
+    response.status(200).send(groomedData);
+
+  } catch (error) {
+    console.log(error);
+    next(error);
+  }
+});
+
+class Movie {
+  constructor(movieObj) {
+    this.title = movieObj.title;
+    this.overview = movieObj.overview;
+    this.posterPath = movieObj.posterPath;
   }
 }
 
