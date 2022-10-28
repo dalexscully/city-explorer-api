@@ -73,15 +73,15 @@ class Forecast {
 
 app.get('/movies', async (request, response, next) => {
   try {
-    let movieCity = request.query.movieCity;
+    let cityName = request.query.city_name;
 
-    let movieUrl = `https://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${movieCity}&language=en`;
+    let movieUrl = `http://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&language=en-US&page=16include_adult=false`;
     console.log('getting movie data', movieUrl);
 
     let movieData = await axios.get(movieUrl);
 
-    let groomedData = movieData.data.results.map(movie => new Movie(movie));
-    response.status(200).send(groomedData);
+    let dataToSend = movieData.data.results.map(movie => new Movie(movie));
+    response.status(200).send(dataToSend);
 
   } catch (error) {
     console.log(error);
@@ -93,7 +93,7 @@ class Movie {
   constructor(movieObj) {
     this.title = movieObj.title;
     this.overview = movieObj.overview;
-    this.posterPath = movieObj.posterPath;
+    this.img = movieObj.poster_path;
   }
 }
 
