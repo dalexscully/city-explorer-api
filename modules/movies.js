@@ -5,7 +5,7 @@ async function moviesMod(req, res, next){
   try {
     let cityName = req.query.city_name;
 
-    let movieUrl = `http://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&language=en-US&page=16include_adult=false`;
+    let movieUrl = `http://api.themoviedb.org/3/search/movie?api_key=${process.env.MOVIE_API_KEY}&query=${cityName}&language=en-US&page=5include_adult=false`;
     console.log('getting movie data', movieUrl);
 
     let movieData = await axios.get(movieUrl);
